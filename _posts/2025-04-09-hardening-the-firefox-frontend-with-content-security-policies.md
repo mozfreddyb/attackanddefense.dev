@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Hardening the Firefox Frontend with Content Security Policies"
-date:   2025-04-09 10:00:00 +0100
+date:   2025-04-09 00:00:00 +0100
 author: Tom Schuster, Frederik Braun, Christoph Kerschbaumer
 ---
 
@@ -21,11 +21,11 @@ Figure 1: Showing the number of inline event handlers in browser.xhtml over time
 
 ### Interlude: How to replace inline event handlers
 
-In case you are a Firefox developer, the maintainer of a Firefox fork like the Tor Browser, or just a web developer interested in securing your own website, the following might be relevant to you. The process of removing inline event handlers usually involves finding all the places that define an inline event handler like `<button onclick=”buttonClicked()”>` and then replacing this with a call to `addEventListener` from a new JS file. Roughly like this:
+In case you are a Firefox developer, the maintainer of a Firefox fork like the Tor Browser, or just a web developer interested in securing your own website, the following might be relevant to you. The process of removing inline event handlers usually involves finding all the places that define an inline event handler like `<button onclick="buttonClicked()">` and then replacing this with a call to `addEventListener` from a new JS file. Roughly like this:
 
 ```
-let button = document.querySelector(“button”);  
-button.addEventListener(“click”, buttonClicked);
+let button = document.querySelector("button");  
+button.addEventListener("click", buttonClicked);
 ```
 
 However there are some important differences to keep in mind between JS code running as inline event handlers and normal event handlers. Firstly, it’s possible to `return false;` from the inline event handler, which is equivalent to calling `event.preventDefault()`. Also note that `this`, which is `event.currentTarget` for inline event handlers, would change if you replaced it with an [arrow function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions) as an event listener. 
